@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Inherit pos.config kanban view to hide the action menu dropdown for users NOT in the group -->
+    <record id="am_cds_view_pos_config_kanban_hide_menu" model="ir.ui.view">
+        <field name="name">pos.config.kanban.hide.action.menu</field>
+        <field name="model">pos.config</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_config_kanban"/>
+        <field name="arch" type="xml">
+            <!-- Hide the dropdown menu container for users NOT in the group -->
+            <xpath expr="//t[@t-name='menu']//div[hasclass('dropdown-pos-config')]" position="attributes">
+                <attribute name="groups">cds_pos.am_cds_group_pos_hide_action_menu</attribute>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="cds_import_sale_pos.SaleOrderRow">
+        <t t-if="!ui.isSmall">
+            <tr class="order-row" 
+                t-attf-class="{{ highlighted ? 'highlight active': '' }}"
+                t-on-click="() => this.props.onClickSaleOrder(props.order)">
+                <td>
+                    <div class="fs-6 fw-bolder"><t t-esc="date"/></div>
+                </td>
+                <td>
+                    <div class="fw-bolder"><t t-esc="name"/></div>
+                </td>
+                <td class="align-middle">
+                    <div class="fw-bolder"><t t-esc="partner"/></div>
+                </td>
+                <td class="align-middle">
+                    <div><t t-esc="salesman"/></div>
+                </td>
+                <td class="align-middle">
+                    <div class="fw-bolder"><t t-esc="total"/></div>
+                    <div t-if="showAmountUnpaid" class="small text-muted">
+                        (left: <t t-esc="amountUnpaidRepr"/>)
+                    </div>
+                </td>
+                <td class="align-middle">
+                    <div><t t-esc="state"/></div>
+                </td>
+            </tr>
+        </t>
+        <t t-else="">
+            <div class="order-row p-3 border-bottom"
+                t-att-class="{ 'bg-primary bg-opacity-10': highlighted }"
+                t-on-click="() => this.props.onClickSaleOrder(props.order)">
+                <div class="d-flex justify-content-between mb-2">
+                    <div class="fw-bolder"><t t-esc="name"/></div>
+                    <div class="text-muted"><t t-esc="date"/></div>
+                </div>
+                <div class="mb-1">
+                    <span class="text-muted">Customer: </span>
+                    <span class="fw-bolder"><t t-esc="partner"/></span>
+                </div>
+                <div class="mb-1">
+                    <span class="text-muted">Salesperson: </span>
+                    <span><t t-esc="salesman"/></span>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <span class="text-muted">Total: </span>
+                        <span class="fw-bolder"><t t-esc="total"/></span>
+                        <span t-if="showAmountUnpaid" class="text-muted ms-2">
+                            (left: <t t-esc="amountUnpaidRepr"/>)
+                        </span>
+                    </div>
+                    <div>
+                        <span class="badge bg-secondary"><t t-esc="state"/></span>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </t>
+
+</templates>

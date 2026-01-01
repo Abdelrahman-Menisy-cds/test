@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="cds_import_sale_pos.SaleOrderList">
+        <div class="orders overflow-y-auto flex-grow-1 rounded-bottom-3 bg-view">
+            <t t-if="props.orders.length !== 0">
+                <table t-if="!ui.isSmall" class="table table-striped table-hover">
+                    <tbody>
+                        <t t-foreach="props.orders" t-as="order" t-key="order.id">
+                            <SaleOrderRow
+                                onClickSaleOrder.bind="props.onClickSaleOrder"
+                                order="order"
+                                highlightedOrder="highlightedOrder" />
+                        </t>
+                    </tbody>
+                </table>
+                <t t-else="">
+                    <t t-foreach="props.orders" t-as="order" t-key="order.id">
+                        <SaleOrderRow
+                            onClickSaleOrder.bind="props.onClickSaleOrder"
+                            order="order"
+                            highlightedOrder="highlightedOrder" />
+                    </t>
+                </t>
+            </t>
+            <t t-else="">
+                <div class="d-flex flex-column align-items-center justify-content-center h-100">
+                    <i class="fa fa-shopping-cart fa-3x text-muted mb-3"/>
+                    <span class="text-muted">No sale orders found</span>
+                </div>
+            </t>
+        </div>
+    </t>
+
+</templates>

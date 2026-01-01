@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <t t-name="cds_pos_sales_person.OrderReceipt" t-inherit="point_of_sale.OrderReceipt" t-inherit-mode="extension" owl="1">
+        <xpath expr="//OrderDisplay" position="before">
+            <div class="paymentlines">
+                <p class="text-center">Sales Person: <span t-if="order.sale_person_id" t-out="order.sale_person_id.name" class="me-2 fw-bold"/> </p>
+            </div>
+        </xpath>
+    </t>
+</templates> 

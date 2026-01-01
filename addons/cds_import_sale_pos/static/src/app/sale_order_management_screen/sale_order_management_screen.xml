@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+<t t-name="cds_import_sale_pos.SaleOrderScreen">
+    <div class="ticket-screen screen h-100 bg-100">
+      <div class="screen-full-width d-flex w-100 h-100">
+        <div t-if="!ui.isSmall || pos.ticket_screen_mobile_pane === 'left'" class="rightpane pane-border d-flex flex-column flex-grow-1 w-100 h-100 h-lg-100 bg-200 overflow-y-auto">
+                <div class="rightpane">
+                    <div class="flex-container flex-container d-flex flex-column h-100">
+                        <SaleOrderManagementControlPanel
+                            onSearch.bind="onSearch"
+                            onPrevPage.bind="onPrevPage"
+                            onNextPage.bind="onNextPage" />
+                        <SaleOrderList
+                            onClickSaleOrder.bind="onClickSaleOrder"
+                            orders="orders"
+                            initHighlightedOrder="pos.orderManagement.selectedOrder" />
+                    </div>
+                </div>
+        </div>
+        <div t-if="(!ui.isSmall || pos.ticket_screen_mobile_pane === 'right')" class="leftpane d-flex flex-column flex-grow-1 gap-2 w-100 h-100 h-lg-100 bg-200 p-2">
+            <t t-set="_selectedSyncedOrder" t-value="getSelectedOrder()" />
+            <t t-set="_selectedOrderlineId" t-value="getSelectedOrderlineId()" />
+            <t t-if="_selectedSyncedOrder?.getOrderlines()?.length" > 
+                <div t-if="isOrderSynced" t-att-class="{ 'highlight text-danger': !getHasItemsToRefund() }" class="py-2 px-3 rounded-3 bg-100 text-center">
+                    Select the product(s) to refund and set the quantity
+                </div>
+                <OrderDisplay order="_selectedSyncedOrder" t-slot-scope="scope">
+                    <t t-set="line" t-value="scope.line" />
+                    <OrderlineComponent line="line"
+                        class="{'selected': line.id === getSelectedOrderlineId()}"
+                        t-on-click="() => this.onClickOrderline(line)">
+                        <t t-set="toRefundQty" t-value="_getSaleLineToRefundQty(line)" />
+                        <t t-set="alreadyRefundedQty" t-value="line.refunded_sale_qty || 0" />
+                        
+                        <!-- Show already refunded quantity -->
+                        <li t-if="!pos.isProductQtyZero(alreadyRefundedQty)"
+                            class="info refund-note mt-1 text-muted">
+                            <strong t-esc="env.utils.formatProductQty(alreadyRefundedQty)" />
+                            <span> Already Refunded</span>
+                        </li>
+                        
+                        <!-- Show to-refund quantity (from numpad input) -->
+                        <li t-if="!pos.isProductQtyZero(toRefundQty)" 
+                            class="info to-refund-highlight refund-note mt-1 fw-bold text-primary">
+                            To Refund: <t t-esc="env.utils.formatProductQty(toRefundQty)" />
+                        </li>
+                    </OrderlineComponent>
+                </OrderDisplay>
+                <div class="pads">
+                    <t t-if="isOrderSynced">
+                        <div class="subpads d-flex flex-column">
+                            <Numpad class="'pb-2'" buttons="getNumpadButtons()"/>
+                            <ActionpadWidget
+                                partner="getSelectedOrder()?.getPartner()"
+                                actionName.translate="Refund"
+                                actionToTrigger.bind="onDoRefund"
+                            />
+                        </div>
+                    </t>
+                </div>
+            </t>
+        </div>
+      </div>
+    </div>
+</t>
+
+</templates>

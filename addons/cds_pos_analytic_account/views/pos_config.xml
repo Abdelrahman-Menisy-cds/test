@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="cds_pos_config_analytic_form_view" model="ir.ui.view">
+        <field name="name">pos_config_form_view</field>
+        <field name="model">pos.config</field>
+        <field name="inherit_id" ref="point_of_sale.pos_config_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//setting[@id='other_devices']" position="after">
+                <setting id="analytic_account" string="Analytic Account" help="Set Analytic Account To PoS">
+                    <field name="analytic_account_id" groups="analytic.group_analytic_accounting"/>
+                </setting>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record model="ir.ui.view" id="cds_analytic_res_config_settings_view_form">
+        <field name="name">res.config.setting.form.analytic.account.view</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="point_of_sale.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//block[@id='pos_accounting_section']" position="inside">
+                <setting string="Analytic Account" id="pos_analytic_account" help="Analytic Account for PoS orders and invoices" 
+                        groups="analytic.group_analytic_accounting">
+                    <div class="content-group mt16">
+                        <div class="row" title="Analytic Account">
+                            <label string="Analytic Account" for="analytic_account_id" class="col-lg-3 o_light_label" options="{'no_open': True, 'no_create': True}"/>
+                            <field name="analytic_account_id" />
+                        </div>
+                        
+                    </div>
+                </setting>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

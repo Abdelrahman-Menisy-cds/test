@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="pos_sales_person.SetSalePerson" t-inherit="point_of_sale.ControlButtons" t-inherit-mode="extension" owl="1">
+        <!-- Add Sales Person button after the InternalNoteButton when not showing remaining buttons -->
+        <xpath expr="//InternalNoteButton" position="after">
+            <button t-if="!props.showRemainingButtons" 
+                class="control-button js_sale_person"
+                t-att-class="buttonClass"
+                t-on-click="() => this.selectSalePerson()">
+                <i class="fa fa-user me-1" role="img" aria-label="Sale Person" title="Sale Person"/>
+                <t t-esc="currentSalePersonName"/>
+            </button>
+        </xpath>
+        
+        <!-- Add Sales Person button in the modal when showing remaining buttons -->
+        <xpath expr="//t[@t-if='props.showRemainingButtons']/div/NoteButton" position="after">
+            <button class="control-button js_sale_person"
+                t-att-class="buttonClass"
+                t-on-click="() => this.selectSalePerson()">
+                <i class="fa fa-user me-1" role="img" aria-label="Sale Person" title="Sale Person"/>
+                <t t-esc="currentSalePersonName"/>
+            </button>
+        </xpath>
+    </t>
+
+</templates>

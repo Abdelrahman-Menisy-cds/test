@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_product_season_user,access_product_season_user,model_product_season,base.group_user,1,1,1,1
+access_product_year_user,access_product_year_user,model_product_year,base.group_user,1,1,1,1
+access_action_product_import,action.product.import.user,model_action_product_import,base.group_user,1,1,1,1

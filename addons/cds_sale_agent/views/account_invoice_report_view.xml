@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+##############################################################################
+#    Copyright (c) 2021 CDS Solutions SRL. (http://cdsegypt.com)
+#    Maintainer: Eng.Ramadan Khalil (<ramadan.khalil@cdsegypt.com>)
+#    It is forbidden to publish, distribute, sublicense, or sell copies
+#    of the Software or modified copies of the Software.
+##############################################################################
+-->
+<odoo>
+
+    <!-- Inherit account.invoice.report search view to add Sales Agent filter -->
+    <record id="view_account_invoice_report_search_inherit" model="ir.ui.view">
+        <field name="name">account.invoice.report.search.inherit</field>
+        <field name="model">account.invoice.report</field>
+        <field name="inherit_id" ref="account.view_account_invoice_report_search"/>
+        <field name="arch" type="xml">
+            <filter name="partner_id" position="after">
+                <filter string="Sales Agent" name="employee_id" context="{'group_by':'employee_id'}"/>
+            </filter>
+        </field>
+    </record>
+</odoo>

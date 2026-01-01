@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- pos order form view inherit -->
+    <record id="pos_order_form_inherit" model="ir.ui.view">
+        <field name="name">pos.order.form.inherit</field>
+        <field name="model">pos.order</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='user_id']" position="after">
+                <field name="analytic_account_id" />
+            </xpath>
+            <xpath expr="//notebook/page[@name='products']/field[@name='lines']/list/field[@name='discount']" position="after">
+                <!-- <field name="analytic_distribution" widget="analytic_distribution" groups="analytic.group_analytic_accounting"/> -->
+                 <field name="analytic_account_id" />
+            </xpath>
+        </field>
+    </record>
+
+
+</odoo>

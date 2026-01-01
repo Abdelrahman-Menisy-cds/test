@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+
+    <t t-name="LoginAs">
+        <div title="Login as" class="o_debug_manager">
+            <a href="#" id="login_as">
+                <i class="fa fa-user"/>
+            </a>
+        </div>
+    </t>
+    <t t-name="LoginBack">
+        <div title="Login Back">
+            <a href="#" id="login_back">
+                <i class="fa fa-user-circle"/>
+            </a>
+        </div>>
+    </t>
+
+</templates>
+

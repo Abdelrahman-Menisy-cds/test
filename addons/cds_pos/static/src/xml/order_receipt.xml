@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <!-- Override the Powered by section in the receipt - Remove it and add barcode for order search -->
+    <t t-inherit="point_of_sale.OrderReceipt" t-inherit-mode="extension">
+        <!-- Add QR code before footer using the before-footer placeholder -->
+        <xpath expr="//div[hasclass('before-footer')]" position="inside">
+            <div class="receipt-qrcode-container" style="margin-top: 15px; text-align: center;">
+                <img src="/cds_pos/static/src/img/receipt_qrcode.png" 
+                     style="max-width: 120px; height: auto; display: block; margin: 0 auto;"/>
+            </div>
+        </xpath>
+        
+        <xpath expr="//div[hasclass('pos-receipt-order-data')][hasclass('text-center')][hasclass('pt-3')]" position="replace">
+            <div class="pos-receipt-order-data text-center pt-3">
+                <!-- Barcode for order search during refund -->
+                <div class="order-barcode-container" style="margin-top: 15px; text-align: center;">
+                    <img t-att-src="this.order_jsbarcode()" style="max-width: 80%; height: auto;"/>
+                    <div style="margin-top: 10px;">
+                        <span style="text-align: center; font-style: italic; font-size: 14px;">Powered by CDS Solutions</span>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+        <xpath expr="//div[hasclass('d-flex')][hasclass('gap-2')][hasclass('pt-3')][.//div[hasclass('pos-config-name')]]" position="replace">
+            <div class="pos-receipt-order-data text-center pt-3" style="font-size: 90%;">
+                <div class="pos-config-name">
+                    <t t-out="order.config.name"/>
+                </div>
+            </div>
+        </xpath>
+    </t>
+</templates>

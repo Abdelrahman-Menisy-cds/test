@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_pos_config_settings_form_inherit" model="ir.ui.view">
+        <field name="name">pos.config.form.inherit</field>
+        <field name="model">pos.config</field>
+        <field name="inherit_id" ref="point_of_sale.pos_config_view_form" />
+        <field name="arch" type="xml">
+            <setting id="other_devices" position="after">
+                        <setting string="Sale Person"
+                            help="">
+                            <label for="sale_persons_ids" class="col-lg-4 o_light_label" />
+                            <field name="sale_persons_ids" widget="many2many_tags" />
+                        </setting>
+            </setting>
+        </field>
+    </record>
+
+
+</odoo>

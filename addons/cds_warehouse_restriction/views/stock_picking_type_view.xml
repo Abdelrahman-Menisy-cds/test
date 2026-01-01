@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+<!-- picking type form view -->
+
+         <record id="cds_stock_picking_type_form" model="ir.ui.view">
+            <field name="name">stock.picking.type.form</field>
+            <field name="model">stock.picking.type</field>
+            <field name="inherit_id" ref="stock.view_picking_type_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='code']" position="after">
+                    <field name="can_validate_own_transfers"/>
+                </xpath>
+            </field>
+        </record>
+
+         <record id="cds_stock_picking_type_action" model="ir.actions.act_window">
+            <field name="name">Inventory Overview</field>
+            <field name="res_model">stock.picking.type</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">kanban,form</field>
+             <field name="domain">[('id','=',False)]</field>
+        </record>
+
+         <record id="action_picking_type_branch_action_server"
+                model="ir.actions.server">
+            <field name="name">Stock Picking Types</field>
+            <field name="model_id" ref="stock.model_stock_picking"/>
+            <field name="state">code</field>
+            <field name="code">action = model.action_view_picking_type()</field>
+        </record>
+
+       <menuitem id="stock.stock_picking_type_menu"
+          name="Manager Overview"
+          groups="stock.group_stock_manager"/>
+
+         <menuitem id="menu_action_branch_picking_type"
+                  name="User Overview"
+                  parent="stock.menu_stock_root"
+                   groups="stock.group_stock_user"
+                  action="cds_warehouse_restriction.action_picking_type_branch_action_server"
+                  sequence="1"/>
+        
+        
+    
+    </data>
+</odoo>

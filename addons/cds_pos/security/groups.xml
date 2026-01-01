@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="am_cds_group_display_customer_balance" model="res.groups">
+        <field name="name">Display customer balance</field>
+    </record>
+
+    <record id="am_cds_group_cds_store_sale_own" model="res.groups">
+        <field name="name">Store Sales Own Documents</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]" />
+        <field name="comment">hide some fields and buttons allowed for "User: Own Documents Only".</field>
+    </record>
+
+    <record id="am_cds_group_pos_hide_action_menu" model="res.groups">
+        <field name="name">POS show Hide Top Action Menu</field>
+        <field name="comment">Used to hide the View/Reporting action dropdown in POS configs.</field>
+    </record>
+</odoo>

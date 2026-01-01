@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="purchase_order_view_form" model="ir.ui.view">
+        <field name="name">purchase.order.form</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase_stock.purchase_order_view_form_inherit"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='picking_type_id']" position="after">
+                <field name="create_user" invisible="1"/>
+                <field name="allowed_picking_type_ids" invisible="1"/>
+            </xpath>
+
+            <xpath expr="//field[@name='picking_type_id']" position="attributes">
+                <attribute name="domain">
+                    [('id', 'in', allowed_picking_type_ids), ('code','=','incoming'), '|', ('warehouse_id', '=', False), ('warehouse_id.company_id', '=', company_id)]</attribute>
+            </xpath>
+        </field>
+    </record>
+    
+    <!--<record id="purchase_order_view_form_allowed_picking" model="ir.ui.view">
+        <field name="name">purchase.order.form</field>
+        <field name="model">purchase.order</field>
+        <field name="groups_id" eval="[(4,ref('cds_warehouse_restriction.group_restrict_view_stock_operations'))]"/>
+        <field name="inherit_id" ref="purchase_stock.purchase_order_view_form_inherit"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='picking_type_id']" position="attributes">
+                <attribute name="domain"></attribute>
+            </xpath>
+
+
+        </field>
+    </record>-->
+</odoo>

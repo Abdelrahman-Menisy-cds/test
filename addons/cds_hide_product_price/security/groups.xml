@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+            <record model="res.groups" id="group_show_product_product_price">
+            <field name="name">Show Product Price</field>
+        </record>
+        
+        
+    
+    </data>
+</odoo>

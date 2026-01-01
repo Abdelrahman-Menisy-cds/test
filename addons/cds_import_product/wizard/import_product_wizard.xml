@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+
+        <record id="action_product_import_view_form" model="ir.ui.view">
+            <field name="name">action.product.import.view.form</field>
+            <field name="model">action.product.import</field>
+            <field name="arch" type="xml">
+                <form string="action product import">
+                    <sheet>
+                            <div name="msg_opr_main">
+                                <div>
+                                    <p colspan="2" class="alert alert-warning"
+                                       role="alert">
+                                        <b>
+                                            <u>
+                                                <h3 style="font-weight:bold;color:#7d5a29">
+                                                    Note :Please follow the
+                                                    following column sequence on
+                                                    import
+                                                    sheet
+                                                </h3>
+                                            </u>
+                                            <table class="table table-bordered table-sm"
+                                                   width="100%">
+                                                <tr>
+                                                    <th>
+                                                        template code
+                                                    </th>
+                                                    <th>
+                                                        Template name
+                                                    </th>
+                                                    <th>
+                                                        Variant barcode
+                                                    </th>
+                                                    <th>
+                                                        Variant code
+                                                    </th>
+                                                    <th>
+                                                        Color Code
+                                                    </th>
+                                                    <th>
+                                                        Size Code
+                                                    </th>
+                                                    <th>
+                                                        Unit Price
+                                                    </th>
+                                                    <th>
+                                                        Unit Cost
+                                                    </th>
+                                                    <th>
+                                                        Product Category Code
+                                                    </th>
+                                                    <th>
+                                                        Product Type
+                                                    </th>
+                                                    <th>
+                                                        Available In POS
+                                                    </th>
+                                                    <th>
+                                                        POS Category
+                                                    </th>
+                                                    <th>
+                                                        Purchase QTY
+                                                    </th>
+                                                    <th>
+                                                        PO Price
+                                                    </th>
+                                                    <th>
+                                                         Vendor names
+                                                    </th>
+                                                </tr>
+                                            </table>
+                                        </b>
+                                    </p>
+                                </div>
+                            </div>
+                        <group>
+                            <field name="file" filename="file_name"/>
+                            <field name="file_name" invisible="1"/>
+                            <field name="update_exist"/>
+                            <field name="create_purchase"/>
+                            <field name="partner_id" invisible="not create_purchase" required="create_purchase"/>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="action_import" string="Import"
+                                type="object"
+                                class="oe_highlight"/>
+                        or
+                        <button special="cancel" string="Cancel"/>
+                    </footer>
+                </form>
+
+
+            </field>
+        </record>
+        <record id="action_product_import_view_action"
+                model="ir.actions.act_window">
+            <field name="name">Import Products</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">action.product.import</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref=""/>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="menu_import_product_action_stock" name="Import Products"
+                  action="action_product_import_view_action"
+                  parent="stock.menu_stock_inventory_control" sequence="100"/>
+
+
+         <record id="action_product_import_purchase_view_form" model="ir.ui.view">
+            <field name="name">action.product.import.view.form</field>
+            <field name="model">action.product.import</field>
+            <field name="arch" type="xml">
+                <form string="action product import">
+                    <sheet>
+                            <div name="msg_opr_main">
+                                <div>
+                                    <p colspan="2" class="alert alert-warning"
+                                       role="alert">
+                                        <b>
+                                            <u>
+                                                <h3 style="font-weight:bold;color:#7d5a29">
+                                                    Note :Please follow the
+                                                    following column sequence on
+                                                    import
+                                                    sheet
+                                                </h3>
+                                            </u>
+                                            <table class="table table-bordered table-sm"
+                                                   width="100%">
+                                                <tr>
+                                                    <th>
+                                                        template code
+                                                    </th>
+                                                    <th>
+                                                        Template name
+                                                    </th>
+                                                    <th>
+                                                        Variant barcode
+                                                    </th>
+                                                    <th>
+                                                        Variant code
+                                                    </th>
+                                                    <th>
+                                                        Color Code
+                                                    </th>
+                                                    <th>
+                                                        Size Code
+                                                    </th>
+                                                    <th>
+                                                        Unit Price
+                                                    </th>
+                                                    <th>
+                                                        Unit Cost
+                                                    </th>
+                                                    <th>
+                                                        Product Category Code
+                                                    </th>
+                                                    <th>
+                                                        Product Type
+                                                    </th>
+                                                    <th>
+                                                        Available In POS
+                                                    </th>
+                                                    <th>
+                                                        POS Category
+                                                    </th>
+                                                    <th>
+                                                        Purchase QTY
+                                                    </th>
+                                                    <th>
+                                                        PO Price
+                                                    </th>
+                                                </tr>
+                                            </table>
+                                        </b>
+                                    </p>
+                                </div>
+                            </div>
+                        <group>
+                            <field name="file" filename="file_name"/>
+                            <field name="file_name" invisible="1"/>
+                            <field name="partner_id" required="1"
+                                   />
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="action_import_purchase" string="Import"
+                                type="object"
+                                class="oe_highlight"/>
+                        or
+                        <button special="cancel" string="Cancel"/>
+                    </footer>
+                </form>
+
+
+            </field>
+        </record>
+        <record id="action_product_import_purchase_view_action"
+                model="ir.actions.act_window">
+            <field name="name">Import Products Purchase</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">action.product.import</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="action_product_import_purchase_view_form"/>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="menu_import_purchase_product_action_stock" name="Import Products Purchase"
+                  action="action_product_import_purchase_view_action"
+                  parent="stock.menu_stock_inventory_control" sequence="120"/>
+
+    </data>
+</odoo>

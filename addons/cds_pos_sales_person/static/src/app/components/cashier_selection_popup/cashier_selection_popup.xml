@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="pos_hr.CashierSelectionPopup" t-inherit="pos_hr.CashierSelectionPopup" t-inherit-mode="extension">
+        <xpath expr="//button[hasclass('selection-item')]" position="attributes">
+            <attribute name="t-foreach">filteredEmployees</attribute>
+        </xpath>
+    </t>
+
+</templates>

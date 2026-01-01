@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Group for the POS Analytic Account Manager -->
+    <record id="group_cds_pos_analytic_account_manager" model="res.groups">
+        <field name="name">Analytic Accounting</field>
+        <field name="category_id" ref="base.module_category_hidden"/>
+    </record>
+
+</odoo>

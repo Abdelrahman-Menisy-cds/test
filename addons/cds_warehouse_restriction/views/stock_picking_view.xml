@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="action_picking_type_barcode_stock" model="ir.actions.server">
+            <field name="name">Stock Operations</field>
+            <field name="model_id" ref="stock.model_stock_picking" />
+            <field name="state">code</field>
+            <field name="group_ids" eval="[(4,ref('base.group_user'))]" />
+            <field name="code">action = model.picking_type_barcode_action()</field>
+        </record>
+
+
+        <record id="cds_action_picking_tree_all" model="ir.actions.act_window">
+            <field name="name">Transfers</field>
+            <field name="res_model">stock.picking</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">list,kanban,form,calendar</field>
+            <field name="domain">[('id','=',False)]</field>
+            <field name="context">{'contact_display': 'partner_address', 'default_company_id': allowed_company_ids[0]}</field>
+            <field name="search_view_id" ref="stock.view_picking_internal_search"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No transfer found. Let's create one!
+                </p>
+                <p>
+                    Transfers allow you to move products from one location to another.
+                </p></field>
+        </record>
+        <record id="action_picking_user_server" model="ir.actions.server">
+            <field name="name">Transfers</field>
+            <field name="model_id" ref="stock.model_stock_picking"/>
+            <field name="state">code</field>
+            <field name="code">action = model.action_view_user_transfers()</field>
+        </record>
+
+        <record id="stock.in_picking" model="ir.ui.menu">
+            <field name="group_ids"
+                eval="[(6,0, [ref('stock.group_stock_manager')])]" />
+            <field name="name">Manager Receipts</field>
+
+        </record>
+        <record id="stock.out_picking" model="ir.ui.menu">
+            <field name="group_ids"
+                eval="[(6,0, [ref('stock.group_stock_manager')])]" />
+            <field name="name">Manager Deliveries</field>
+
+        </record>
+        <record id="stock.int_picking" model="ir.ui.menu">
+            <field name="group_ids"
+                eval="[(6,0, [ref('stock.group_stock_manager')])]" />
+            <field name="name">Manager Internal</field>
+
+        </record>
+
+
+        <menuitem id="all_picking_user"
+            parent="stock.menu_stock_warehouse_mgmt"
+            groups="stock.group_stock_user"
+            action="cds_warehouse_restriction.action_picking_user_server"
+            sequence="1" />
+        <record id="cds_stock_picking_view_form" model="ir.ui.view">
+            <field name="name">stock.picking.form</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form" />
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='picking_type_id']" position="after">
+                    <field name="can_edit_src" invisible="1" />
+                    <field name="can_edit_dst" invisible="1" />
+                    <field name="picking_type_code" invisible="1" />
+                </xpath>
+                <xpath expr="//field[@name='location_id'][2]" position="attributes">
+                    <attribute name="invisible">picking_type_code == 'incoming'</attribute>
+                    <attribute name="groups">stock.group_stock_manager,cds_warehouse_restriction.group_change_picking_src_location</attribute>
+                    <attribute name="readonly">can_edit_src == False or state == 'done' </attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='location_dest_id'][2]" position="attributes">
+                    <attribute name="readonly">can_edit_dst == False or state == 'done'</attribute>
+                    <attribute name="groups">stock.group_stock_manager,cds_warehouse_restriction.group_change_picking_dest_location</attribute>
+                </xpath>
+
+<!--                <xpath expr="//field[@name='picking_type_id']"-->
+<!--                    position="attributes">-->
+<!--                    <attribute name="invisible">1</attribute>-->
+
+<!--                </xpath>-->
+                <xpath expr="//field[@name='picking_type_id']"
+                    position="after">
+                    <field name="view_picking_type_id" invisible="can_edit_src and can_edit_dst"/>
+                </xpath>
+
+
+            </field>
+        </record>
+
+        <record id="stock_picking_view_form_change_location" model="ir.ui.view">
+        <field name="name">stock.picking.form</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="cds_warehouse_restriction.cds_stock_picking_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='picking_type_id']" position="attributes">
+                <attribute name="readonly">state == 'done'</attribute>
+                <attribute name="groups">stock.group_stock_manager,cds_warehouse_restriction.group_change_picking_src_location,cds_warehouse_restriction.group_change_picking_dest_location</attribute>
+            </xpath>
+        </field>
+    </record>
+        <!-- <record id="stock_picking_view_form_change_location" model="ir.ui.view">
+            <field name="name">stock.picking.form</field>
+            <field name="model">stock.picking</field>
+            <field name="group_ids"
+        eval="[(6,0,[ref('stock.group_stock_manager'),ref('cds_warehouse_restriction.group_change_picking_src_dest_location')])]"/>
+
+            <field name="inherit_id" ref="cds_warehouse_restriction.stock_picking_view_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='location_id']" position="attributes">
+                    <attribute name="invisible">picking_type_code == 'incoming'</attribute>
+
+
+                </xpath>
+                <xpath expr="//field[@name='location_dest_id']"
+                       position="attributes">
+                    <attribute name="invisible">picking_type_code == 'outgoing'</attribute>
+
+
+                </xpath>
+                <xpath expr="//field[@name='picking_type_id']"
+                       position="attributes">
+                    <attribute name="readonly">0</attribute>
+
+
+                </xpath>
+
+
+            </field>
+        </record>-->
+
+
+    </data>
+</odoo>

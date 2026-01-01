@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="cds_login_as_wizard_view_form" model="ir.ui.view">
+            <field name="name">cds.login.as.wizard.view.form</field>
+            <field name="model">cds.login.as.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Login As">
+                    <sheet>
+                        <group>
+                            <field name="user_id"
+                                   options="{'no_open': True, 'no_create': True}"/>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="action_login_as" string="Login"
+                                type="object" class="oe_highlight"/>
+                        or
+                        <button special="cancel" string="Cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+<!--
+        <record id="pos_order_employee_update_wizard_action"
+                model="ir.actions.act_window">
+            <field name="name">Update POS Employee</field>
+            <field name="res_model">pos.order.employee.update</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="pos_order_employee_update_view_form"/>
+            <field name="target">new</field>
+            <field name="context">{}</field>
+            <field name="binding_model_id" ref="point_of_sale.model_pos_order"/>
+            <field name="binding_view_types">list</field>
+            <field name="groups_id"
+                   eval="[(4, ref('point_of_sale.group_pos_user'))]"/>
+        </record>-->
+
+
+    </data>
+</odoo>

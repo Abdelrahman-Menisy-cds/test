@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="cds_pos.ClosePosPopup" t-inherit="point_of_sale.ClosePosPopup" t-inherit-mode="extension">
+        <!-- Hide Cash header (total amount) -->
+        <xpath expr="//div[hasclass('d-flex')][hasclass('fs-3')][span[@t-esc='props.default_cash_details.name']]" position="attributes">
+            <attribute name="t-if">false</attribute>
+        </xpath>
+
+        <xpath expr="//div[hasclass('total-orders')]" position="replace">
+            <div class="total-orders fw-bolder align-middle my-1">
+                <t t-esc="props.orders_details.quantity"/> orders
+            </div>
+        </xpath>
+
+        <xpath expr="//div[hasclass('text-muted')][hasclass('border-start')][span[contains(text(), 'Payments in')]]" position="attributes">
+            <attribute name="t-if">false</attribute>
+        </xpath>
+
+        <xpath expr="//PaymentMethodBreakdown" position="attributes">
+            <attribute name="t-if">false</attribute>
+        </xpath>
+
+        <xpath expr="//button[@t-on-click='downloadSalesReport']" position="attributes">
+            <attribute name="t-if">false</attribute>
+        </xpath>
+
+        <!-- <xpath expr="//Input[contains(@class, 'cash-input')]" position="attributes">
+            <attribute name="class">'cash-input w-100 cds_close_readonly'</attribute>
+        </xpath> -->
+
+        <xpath expr="//Input[contains(@class, 'w-100')][not(contains(@class, 'cash-input'))]" position="attributes">
+            <attribute name="class">'w-100 cds_close_readonly'</attribute>
+        </xpath>
+
+        <xpath expr="//div[hasclass('text-muted')][hasclass('border-start')][span[text()='Counted']]" position="attributes">
+            <attribute name="t-if">false</attribute>
+        </xpath>
+        
+        <!-- Hide Opening balance line -->
+<!--        <xpath expr="//div[hasclass('text-muted')][hasclass('border-start')][span[text()='Opening']]" position="attributes">-->
+<!--            <attribute name="t-if">false</attribute>-->
+<!--        </xpath>-->
+<!--        -->
+<!--        &lt;!&ndash; Hide Payments in Cash line &ndash;&gt;-->
+<!--        <xpath expr="//div[hasclass('text-muted')][hasclass('border-start')][span[contains(text(), 'Payments in')]]" position="attributes">-->
+<!--            <attribute name="t-if">false</attribute>-->
+<!--        </xpath>-->
+<!--        -->
+<!--        &lt;!&ndash; Hide Cash In/Out breakdown &ndash;&gt;-->
+<!--        <xpath expr="//PaymentMethodBreakdown" position="attributes">-->
+<!--            <attribute name="t-if">false</attribute>-->
+<!--        </xpath>-->
+<!--        -->
+<!--        &lt;!&ndash; Hide Counted field &ndash;&gt;-->
+<!--        <xpath expr="//div[hasclass('text-muted')][hasclass('border-start')][span[text()='Counted']]" position="attributes">-->
+<!--            <attribute name="t-if">false</attribute>-->
+<!--        </xpath>-->
+<!--        -->
+        <!-- Hide Difference field -->
+        <xpath expr="//div[hasclass('text-muted')][hasclass('border-start')][span[text()='Difference']]" position="attributes">
+            <attribute name="t-if">false</attribute>
+        </xpath>
+    </t>
+
+</templates>

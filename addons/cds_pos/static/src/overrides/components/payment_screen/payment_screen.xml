@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Copyright (c) 2021 CDS Solutions SRL. (http://cdsegypt.com)
+    Maintainer: Eng.Ramadan Khalil (<ramadan.khalil@cdsegypt.com>),Abdelrahman Menisy (<a.mansy@cdsegypt.com>) ,
+    It is forbidden to publish, distribute, sublicense, or sell copies
+    of the Software or modified copies of the Software.
+-->
+<templates id="template" xml:space="preserve">
+    <t t-name="cds_pos.PaymentScreenButtons" t-inherit="point_of_sale.PaymentScreenButtons" t-inherit-mode="extension">
+        <xpath expr="//button[hasclass('js_invoice')]" position="attributes">
+            <attribute name="t-if">pos.config.show_invoice_button</attribute>
+        </xpath>
+    </t>
+</templates>

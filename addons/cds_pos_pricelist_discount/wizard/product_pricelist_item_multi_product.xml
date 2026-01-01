@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- View product.pricelist.item.multi.product form -->
+    <record id="view_product_pricelist_item_multi_product_form" model="ir.ui.view">
+        <field name="name">view.product.pricelist.item.multi.product.form</field>
+        <field name="model">product.pricelist.item.multi.product</field>
+        <field name="arch" type="xml">
+            <form string="Product Pricelist Item Multi Product">
+                <group>
+                    <field name="product_ids" widget="many2many_tags" />
+                </group>
+                <group >
+                    <field name="discount"/>
+                </group>
+
+                <group name="pricelist_rule_limits">
+                    <label for="date_start" string="Validity"/>
+                    <div class="o_row">
+                        <field name="date_start" widget="daterange" options='{"related_end_date": "date_end"}'/>
+                        <i class="fa fa-long-arrow-right mx-2 oe_edit_only" aria-label="Arrow icon" title="Arrow"/>
+                        <field name="date_end" widget="daterange" options='{"related_start_date": "date_start"}'/>
+                    </div>
+                </group>
+                <footer>
+                    <button name="add" type="object" string="Add" class="oe_highlight"/>
+                    <button special="cancel" string="Cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action product.pricelist.item.multi.product -->
+    <record id="action_product_pricelist_item_multi_product" model="ir.actions.act_window">
+        <field name="name">Product Pricelist Item Multi Product</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">product.pricelist.item.multi.product</field>
+        <field name="view_mode">form</field>
+        <!-- <field name="binding_model_id" ref="addon.model_model_name"/> -->
+        <field name="target">new</field>
+    </record>
+
+    <!-- product.product_pricelist_view inherit -->
+    <record id="product_pricelist_view_inherit" model="ir.ui.view">
+        <field name="name">product.pricelist.view.inherit</field>
+        <field name="model">product.pricelist</field>
+        <field name="inherit_id" ref="product.product_pricelist_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="before">
+                <header>
+                    <button name="%(action_product_pricelist_item_multi_product)d" string="Add Products (Discount)" type="action" class="oe_highlight"/>
+                </header>
+            </xpath>
+        </field>
+    </record>
+    
+</odoo>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_product_year_form" model="ir.ui.view">
+        <field name="name">product.year.form</field>
+        <field name="model">product.year</field>
+        <field name="arch" type="xml">
+            <form string="MODEL" create="true" duplicate="true" edit="true" delete="true">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_product_year_tree" model="ir.ui.view">
+        <field name="name">product.year.tree</field>
+        <field name="model">product.year</field>
+        <field name="arch" type="xml">
+            <list create="true" duplicate="true" edit="true" delete="true">
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_product_year_action" model="ir.actions.act_window">
+        <field name="name">Product Year</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">product.year</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menuitem_product_year" name="Product Year" parent="stock.menu_stock_inventory_control" action="view_product_year_action" sequence="10"/>
+
+</odoo>
