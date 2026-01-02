@@ -1,83 +1,61 @@
-# CDS Sales Internal Transfer
+# CDS Sale Internal Transfer Module
 
 ## Overview
 
-This module allows you to link Sales Orders with Internal Transfers, providing seamless integration between your sales and warehouse operations.
+This module allows linking Sales Orders with Internal Transfers by adding a new field in Quotations named "Internal Transfer". When an Internal Transfer in Done status is selected, the products from the Internal Transfer are automatically added to the Sales Order.
 
 ## Features
 
-- **Internal Transfer Field**: Adds an "Internal Transfer" field in Sales Order (Quotation) form
+- **Internal Transfer Selection**: Add a field in Sales Order (Quotation) to select an Internal Transfer
+- **Status Filtering**: Only shows Internal Transfers with "Done" status
 - **Auto Product Addition**: Automatically adds products from the selected Internal Transfer to the Sales Order lines
-- **Status Validation**: Only allows selection of Internal Transfers in "Done" status
-- **Duplicate Prevention**: Prevents the same Internal Transfer from being linked to multiple Sales Orders
-- **Quantity Validation**: Ensures quantities and products match exactly between Internal Transfer and Sales Order
-- **Price Calculation**: Automatically calculates prices based on product list price or pricelist
-
-## Usage
-
-1. Go to Sales > Quotations or create a new Sales Order
-2. In the Sales Order form, you'll see an "Internal Transfer" field (requires stock user permissions)
-3. Select an Internal Transfer that is in "Done" status
-4. The products from the Internal Transfer will be automatically added to the order lines
-5. Review the quantities and prices, then confirm the Sales Order
-
-## Constraints
-
-- Each Internal Transfer can only be linked to one Sales Order
-- Internal Transfer must be in "Done" status to be selected
-- Quantities must match exactly between Internal Transfer and Sales Order
-- Field becomes read-only when Sales Order is confirmed/cancelled
-
-## Technical Details
-
-### Models Modified
-
-- `sale.order`: Added `internal_transfer_id` field and related methods
-
-### Key Methods
-
-- `_onchange_internal_transfer_id()`: Handles automatic product addition
-- `_check_internal_transfer_unique()`: Constraint to prevent duplicates
-- `action_confirm()`: Validation before confirming Sales Order
-
-### Dependencies
-
-- `sale`: Base Sales module
-- `stock`: Warehouse/Inventory module
+- **Uniqueness Constraint**: Prevents selecting the same Internal Transfer in multiple Sales Orders
+- **Exact Matching**: Ensures quantities and products match exactly those in the Internal Transfer
 
 ## Installation
 
 1. Copy the module to your Odoo addons directory
 2. Update the module list in Odoo
-3. Install the "CDS Sales Internal Transfer" module
-4. Restart Odoo server
+3. Install the "CDS Sale Internal Transfer" module
 
-## Security
+## Usage
 
-The Internal Transfer field is only visible to users with "Stock User" permissions (`stock.group_stock_user`).
+1. Create or edit a Sales Order (Quotation)
+2. In the Internal Transfer field, select an Internal Transfer that has "Done" status
+3. The products from the selected Internal Transfer will be automatically added to the order lines
+4. The system will prevent you from selecting an Internal Transfer that is already linked to another Sales Order
 
-## Version Compatibility
+## Technical Details
 
-- Odoo 19.0+
+### Model Extensions
 
-## Author
+- `sale.order`: Added `cds_internal_transfer_id` field to link with internal transfers
+- Added onchange method to automatically populate order lines
+- Added constraints to prevent duplicate internal transfer usage
 
-**CDS Solutions SRL**
-- Website: https://www.cdsegypt.com
-- Contributors: 
-  - Eng.Ramadan Khalil (<ramadan.khalil@cdsegypt.com>)
-  - Abdelrahman Menisy (<a.mansy@cdsegypt.com>)
+### Dependencies
+
+- `sale_management`: For Sales Order functionality
+- `stock`: For Internal Transfer (stock.picking) functionality
+
+## Development
+
+**Developed by**: CDS Solutions SRL  
+**Maintainers**: 
+- Eng.Ramadan Khalil (<ramadan.khalil@cdsegypt.com>)
+- Abdelrahman Menisy (<a.mansy@cdsegypt.com>)
+
+**Website**: https://www.cdsegypt.com
 
 ## License
 
-LGPL-3
+This module is licensed under LGPL-3.
 
 ## Changes by Abdelrahman Menisy
 
-### Version 1.0 - Initial Implementation
-- Created module structure
+### Version 1.0 (2025-01-02)
+- Initial implementation
 - Added Internal Transfer field to Sales Order
-- Implemented automatic product addition logic
-- Added validation constraints
-- Created view modifications
-- Added comprehensive documentation
+- Implemented automatic product population from Internal Transfer
+- Added uniqueness constraints to prevent duplicate usage
+- Created comprehensive documentation

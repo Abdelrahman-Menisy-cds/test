@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright (c) 2021 CDS Solutions SRL. (http://cdsegypt.com)
 #
 # Maintainer: Eng.Ramadan Khalil (<ramadan.khalil@cdsegypt.com>),Abdelrahman Menisy (<a.mansy@cdsegypt.com>) ,
@@ -5,93 +6,67 @@
 # of the Software or modified copies of the Software.
 
 from odoo import models, fields, api, _
-from odoo.exceptions import ValidationError, UserError
+from odoo.exceptions import ValidationError
 
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
-    internal_transfer_id = fields.Many2one(
+    cds_internal_transfer_id = fields.Many2one(
         'stock.picking', 
         string='Internal Transfer',
-        domain="[('picking_type_id.code', '=', 'internal'), ('state', '=', 'done')]",
-        help='Select an Internal Transfer in Done status to auto-add its products to this Sales Order'
+        domain="[('picking_type_code', '=', 'internal'), ('state', '=', 'done')]",
+        help='Select an Internal Transfer in Done status to automatically add its products to this Sales Order'
     )
 
-    @api.onchange('internal_transfer_id')
-    def _onchange_internal_transfer_id(self):
-        """When internal transfer is selected, add its products to the order lines"""
-        if self.internal_transfer_id:
-            # Check if this internal transfer is already used in another sale order
-            existing_so = self.search([
-                ('internal_transfer_id', '=', self.internal_transfer_id.id),
-                ('id', '!=', self.id if self.id else False),
-                ('state', 'not in', ['cancel', 'draft'])
+    @api.onchange('cds_internal_transfer_id')
+    def _onchange_internal_transfer(self):
+        """When internal transfer changes, add its products to order lines"""
+        if self.cds_internal_transfer_id:
+            # Check if this internal transfer is already linked to another sale order
+            existing_order = self.search([
+                ('cds_internal_transfer_id', '=', self.cds_internal_transfer_id.id),
+                ('id', '!=', self.id) if self.id else ('id', '!=', 0)
             ])
-            if existing_so:
-                raise UserError(_(
-                    'This Internal Transfer is already linked to Sales Order %s. '
-                    'Each Internal Transfer can only be linked to one Sales Order.'
-                ) % existing_so.name)
-
+            if existing_order:
+                raise ValidationError(_('This Internal Transfer is already linked to Sales Order %s') % existing_order.name)
+            
             # Clear existing order lines
-            self.order_line = False
-
+            self.order_line = [(5, 0, 0)]
+            
             # Add products from internal transfer
-            for move in self.internal_transfer_id.move_lines:
+            for move in self.cds_internal_transfer_id.move_ids:
                 if move.product_id and move.product_qty > 0:
-                    # Get the sales price from product
-                    price = move.product_id.lst_price
-                    if self.pricelist_id:
-                        price = self.pricelist_id.with_context(
-                            uom=move.product_uom.id
-                        ).get_product_price(
-                            move.product_id, 
-                            move.product_qty, 
-                            self.partner_id
-                        )
-
-                    self.order_line.create({
-                        'order_id': self.id,
+                    self.order_line = [(0, 0, {
                         'product_id': move.product_id.id,
                         'product_uom_qty': move.product_qty,
                         'product_uom': move.product_uom.id,
-                        'price_unit': price,
                         'name': move.product_id.name,
-                    })
+                        'price_unit': move.product_id.list_price or 0.0,
+                    })]
 
-    @api.constrains('internal_transfer_id')
-    def _check_internal_transfer_unique(self):
-        """Ensure each internal transfer is only used once"""
+    @api.constrains('cds_internal_transfer_id')
+    def _check_internal_transfer_uniqueness(self):
+        """Ensure internal transfer is not linked to multiple sale orders"""
         for order in self:
-            if order.internal_transfer_id:
-                existing_so = self.search([
-                    ('internal_transfer_id', '=', order.internal_transfer_id.id),
-                    ('id', '!=', order.id),
-                    ('state', 'not in', ['cancel'])
+            if order.cds_internal_transfer_id:
+                existing_order = self.search([
+                    ('cds_internal_transfer_id', '=', order.cds_internal_transfer_id.id),
+                    ('id', '!=', order.id)
                 ])
-                if existing_so:
-                    raise ValidationError(_(
-                        'This Internal Transfer is already linked to Sales Order %s. '
-                        'Each Internal Transfer can only be linked to one Sales Order.'
-                    ) % existing_so.name)
+                if existing_order:
+                    raise ValidationError(_('This Internal Transfer is already linked to Sales Order %s') % existing_order.name)
 
-    def action_confirm(self):
-        """Override to validate internal transfer before confirming"""
-        if self.internal_transfer_id:
-            # Check if internal transfer is in done state
-            if self.internal_transfer_id.state != 'done':
-                raise UserError(_('Cannot confirm Sales Order. The selected Internal Transfer must be in Done state.'))
-            
-            # Check if quantities match
-            for move in self.internal_transfer_id.move_lines:
-                order_line = self.order_line.filtered(lambda l: l.product_id == move.product_id)
-                if not order_line:
-                    raise UserError(_('Product %s from Internal Transfer is missing in Sales Order lines.') % move.product_id.name)
-                if order_line.product_uom_qty != move.product_qty:
-                    raise UserError(_(
-                        'Quantity mismatch for product %s. '
-                        'Internal Transfer: %s, Sales Order: %s'
-                    ) % (move.product_id.name, move.product_qty, order_line.product_uom_qty))
-        
-        return super().action_confirm()
+    def write(self, vals):
+        """Override write to handle internal transfer changes"""
+        if 'cds_internal_transfer_id' in vals:
+            for order in self:
+                if vals.get('cds_internal_transfer_id'):
+                    # Check if the new internal transfer is already used
+                    existing_order = self.search([
+                        ('cds_internal_transfer_id', '=', vals['cds_internal_transfer_id']),
+                        ('id', '!=', order.id)
+                    ])
+                    if existing_order:
+                        raise ValidationError(_('This Internal Transfer is already linked to Sales Order %s') % existing_order.name)
+        return super(SaleOrder, self).write(vals)

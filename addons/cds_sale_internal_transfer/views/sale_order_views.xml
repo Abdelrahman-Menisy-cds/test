@@ -1,19 +1,21 @@
-<?xml version="1.0"?>
-<odoo>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2021 CDS Solutions SRL. (http://cdsegypt.com)
 
-    <record id="view_sale_order_form_internal_transfer" model="ir.ui.view">
-        <field name="name">sale.order.form.internal.transfer</field>
+     Maintainer: Eng.Ramadan Khalil (<ramadan.khalil@cdsegypt.com>),Abdelrahman Menisy (<a.mansy@cdsegypt.com>) ,
+     It is forbidden to publish, distribute, sublicense, or sell copies
+     of the Software or modified copies of the Software. -->
+
+<odoo>
+    <record id="view_order_form_cds_internal_transfer" model="ir.ui.view">
+        <field name="name">sale.order.form.cds.internal.transfer</field>
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
-            <field name="partner_shipping_id" position="after">
-                <field 
-                    name="internal_transfer_id" 
-                    options="{'no_create': True}"
-                    attrs="{'readonly': [('state', 'in', ['sale', 'done', 'cancel'])]}"
-                    groups="stock.group_stock_user"/>
-            </field>
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="cds_internal_transfer_id" 
+                       options="{'no_create': True, 'no_quick_create': True}"
+                       attrs="{'readonly': [('state', 'in', ['sale', 'done', 'cancel'])]}"/>
+            </xpath>
         </field>
     </record>
-
 </odoo>

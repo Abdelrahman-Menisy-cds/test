@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright (c) 2021 CDS Solutions SRL. (http://cdsegypt.com)
 #
 # Maintainer: Eng.Ramadan Khalil (<ramadan.khalil@cdsegypt.com>),Abdelrahman Menisy (<a.mansy@cdsegypt.com>) ,
@@ -5,32 +6,35 @@
 # of the Software or modified copies of the Software.
 
 {
-    'name': 'CDS Sales Internal Transfer',
+    'name': 'CDS Sale Internal Transfer',
     'version': '1.0',
-    'category': 'Sales/Sales',
+    'category': 'Sales',
     'summary': 'Link Sales Orders with Internal Transfers',
     'description': """
-Link Sales Orders with Internal Transfers
-==========================================
+CDS Sale Internal Transfer Module
+==================================
 
-This module allows you to link Sales Orders with Internal Transfers by:
-- Adding an Internal Transfer field in Quotations
-- Selecting Internal Transfers in Done status
-- Automatically adding products from the Internal Transfer to the Sales Order
-- Preventing duplicate selection of the same Internal Transfer
-- Ensuring quantities and products match exactly
-    """,
+This module allows linking Sales Orders with Internal Transfers by:
+- Adding a field in Quotations to select an Internal Transfer (Done status only)
+- Automatically adding products from the selected Internal Transfer to the Sales Order
+- Preventing selection of the same Internal Transfer in multiple Sales Orders
+- Ensuring quantities and products match exactly those in the Internal Transfer
+""",
     'author': "CDS Solutions SRL",
     'website': "https://www.cdsegypt.com",
     'contributors': [
         'Eng.Ramadan Khalil (<ramadan.khalil@cdsegypt.com>)',
         'Abdelrahman Menisy (<a.mansy@cdsegypt.com>)',
     ],
-    'depends': ['sale', 'stock'],
+    'depends': [
+        'sale_management',
+        'stock',
+    ],
     'data': [
         'views/sale_order_views.xml',
     ],
     'installable': True,
     'auto_install': False,
+    'application': False,
     'license': 'LGPL-3',
 }
