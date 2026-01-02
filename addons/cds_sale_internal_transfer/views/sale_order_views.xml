@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <record id="view_sale_order_form_internal_transfer" model="ir.ui.view">
+        <field name="name">sale.order.form.internal.transfer</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <field name="partner_shipping_id" position="after">
+                <field 
+                    name="internal_transfer_id" 
+                    options="{'no_create': True}"
+                    attrs="{'readonly': [('state', 'in', ['sale', 'done', 'cancel'])]}"
+                    groups="stock.group_stock_user"/>
+            </field>
+        </field>
+    </record>
+
+</odoo>
