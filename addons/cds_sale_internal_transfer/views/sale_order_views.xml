@@ -1,31 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (c) 2021 CDS Solutions SRL. (http://cdsegypt.com)
-     
-     Maintainer: Eng.Ramadan Khalil (<ramadan.khalil@cdsegypt.com>),Abdelrahman Menisy (<a.mansy@cdsegypt.com>) ,
-     It is forbidden to publish, distribute, sublicense, or sell copies
-     of the Software or modified copies of the Software. -->
-
 <odoo>
     <data>
         <!-- Sale Order Form View -->
-        <record id="view_order_form_inherit_sale_internal_transfer" model="ir.ui.view">
-            <field name="name">sale.order.form.inherit.sale.internal.transfer</field>
+        <record id="view_order_form_inherit" model="ir.ui.view">
+            <field name="name">sale.order.form.inherit</field>
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
-                <xpath expr="//field[@name='date_order']" position="after">
+                <xpath expr="//field[@name='partner_id']" position="after">
                     <field name="internal_transfer_id" 
-                           readonly="[('state', 'not in', ['draft', 'sent'])]"
-                           options="{'no_create': True, 'no_create_edit': True}"/>
+                           readonly="state in ['sale', 'done', 'cancel']"
+                           options="{'no_create': True, 'no_quick_create': True}"/>
                 </xpath>
             </field>
         </record>
 
-        <!-- Sale Order Tree View -->
-        <record id="view_order_tree_inherit_sale_internal_transfer" model="ir.ui.view">
-            <field name="name">sale.order.tree.inherit.sale.internal.transfer</field>
+        <!-- Sale Order List View -->
+        <record id="view_quotation_tree_inherit" model="ir.ui.view">
+            <field name="name">sale.order.tree.inherit</field>
             <field name="model">sale.order</field>
-            <field name="inherit_id" ref="sale.view_order_tree"/>
+            <field name="inherit_id" ref="sale.view_quotation_tree"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='state']" position="before">
                     <field name="internal_transfer_id" optional="show"/>
@@ -33,19 +27,39 @@
             </field>
         </record>
 
+        <!-- Sale Order Kanban View -->
+        <record id="view_sale_order_kanban_inherit" model="ir.ui.view">
+            <field name="name">sale.order.kanban.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_sale_order_kanban"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='state']" position="before">
+                    <field name="internal_transfer_id"/>
+                </xpath>
+                <xpath expr="//field[@name='name']" position="after">
+                    <t t-if="record.internal_transfer_id.value">
+                        <span class="badge text-bg-info">
+                            <i class="fa fa-exchange"/> 
+                            <t t-esc="record.internal_transfer_id.value"/>
+                        </span>
+                    </t>
+                </xpath>
+            </field>
+        </record>
+
         <!-- Search View -->
-        <record id="view_sales_order_filter_inherit_sale_internal_transfer" model="ir.ui.view">
-            <field name="name">sale.order.filter.inherit.sale.internal.transfer</field>
+        <record id="view_sales_order_filter_inherit" model="ir.ui.view">
+            <field name="name">sale.order.filter.inherit</field>
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_sales_order_filter"/>
             <field name="arch" type="xml">
-                <xpath expr="//filter[@name='my_sale_orders']" position="after">
+                <xpath expr="//filter[@name='my_sale_orders_filter']" position="after">
                     <separator/>
                     <filter string="With Internal Transfer" name="with_internal_transfer" domain="[('internal_transfer_id', '!=', False)]"/>
                     <filter string="Without Internal Transfer" name="without_internal_transfer" domain="[('internal_transfer_id', '=', False)]"/>
                 </xpath>
-                <xpath expr="//group" position="inside">
-                    <filter string="Internal Transfer" name="internal_transfer" domain="[]" context="{'group_by': 'internal_transfer_id'}"/>
+                <xpath expr="//group[@name='group_by']" position="inside">
+                    <filter string="Internal Transfer" name="group_internal_transfer" context="{'group_by': 'internal_transfer_id'}"/>
                 </xpath>
             </field>
         </record>
